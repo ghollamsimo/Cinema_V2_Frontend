@@ -11,7 +11,9 @@ interface AuthState {
     datalist: any[];
     dataObj: any;
     errorMessage: string | null;
+    token: string | null;
 }
+
 
 interface RegisterData {
     name: string;

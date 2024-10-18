@@ -1,11 +1,17 @@
 import './App.css'
-import Header from "./components/Header.tsx";
+import Register from "./auth/Register.tsx";
+import {Route, Routes} from "react-router-dom";
+import React from "react";
+import Login from "./auth/Login.tsx";
 
 function App() {
 
   return (
     <>
-        <Header/>
+        <Register/>
+        <Routes>
+            <Route path="/login" element={<Login/>}/>
+        </Routes>
     </>
   )
 }

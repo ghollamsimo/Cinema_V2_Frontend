@@ -3,4 +3,5 @@ export const initialState: AuthState = {
     datalist: [],
     dataObj: {},
     errorMessage: null,
+    token: null,
 };

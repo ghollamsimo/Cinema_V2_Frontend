@@ -21,6 +21,10 @@ class AuthService {
     logout(data: LogoutData): Promise<any> {
         return this.http.post('/auth/logout', data);
     }
+
+    getToken(){
+        return localStorage.getItem()
+    }
 }
 
 export default new AuthService();

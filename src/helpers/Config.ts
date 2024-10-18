@@ -1,9 +1,10 @@
-export const Config = () : ConfigOptions => {
-    return  {
+
+export const Config = (token: string | null = null) => {
+    return {
         baseURL: 'http://localhost:8080/',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer`,
+            ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
         },
-    }
-}
+    };
+};

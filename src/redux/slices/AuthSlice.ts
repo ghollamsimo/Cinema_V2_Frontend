@@ -1,37 +1,22 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import {initialState} from "../initialisation.ts";
-import AuthService from "../../services/AuthService.ts";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { initialState } from "../initialisation.ts";
+import {register, login} from "../actions/AuthAction.ts";
 
-export const register = createAsyncThunk(
-    "auth/register",
-    async ({ name, email, password, role }, { rejectWithValue }) => {
-        try {
-            const response = await AuthService.register({ name, email, password, role });
-            return response.data;
-        } catch (error) {
-            return rejectWithValue(error.response?.data || error.message);
-        }
-    }
-);
-
-export const login = createAsyncThunk(
-    "auth/login",
-    async ({email, password} , {rejectWithValue}) => {
-        try {
-            const res = await AuthService.login({email, password})
-            return res.data
-        }catch (err) {
-            return rejectWithValue(err.response?.data || err.message);
-
-        }
-    }
-)
 
 const authSlice = createSlice({
     name: 'auth',
     initialState,
-    reducers: {},
-    extraReducers: (builder) => {
+    reducers: {
+        changeStateTrue: (state) => {
+            state.updateState = true;
+        },
+        changeStateFalse: (state) => {
+            state.updateState = false;
+        },
+        clearResponse: (state) => {
+            state.response = "";
+        },
+    },    extraReducers: (builder) => {
         builder
             .addCase(register.pending, (state) => {
                 state.loading = true;
