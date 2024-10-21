@@ -7,7 +7,6 @@ class AuthService {
         this.http = Api();
     }
 
-
     register(data: RegisterData): Promise<any> {
         return this.http.post('/auth/register', data);
     }

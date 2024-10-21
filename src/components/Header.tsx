@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
-import "../style/Header.scss";
+import "../style/Navbar.scss";
 import React from "react";
+import {Search} from "./Search.tsx";
+import {MobileSearch} from "./MobileSearch.tsx";
 
 const Header: React.FC = () => {
 
@@ -16,16 +18,20 @@ const Header: React.FC = () => {
                             <Link to="/home">Home</Link>
                         </li>
                         <li className="relative z-20">
-                            hh
+                            <Search/>
                         </li>
                         <li className="relative">
                             <Link to={'/login'}>
-hhhh                            </Link>
+                                <button   className="bg-white text-black py-2 px-8 rounded-lg hover:bg-gray-100 transition duration-300 ease-in-out shadow-lg">
+                                    login
+                                </button>
+                            </Link>
                         </li>
                     </ul>
                 </div>
             </nav>
 
+            <MobileSearch/>
         </header>
     );
 };
