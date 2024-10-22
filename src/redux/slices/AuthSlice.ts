@@ -28,6 +28,18 @@ export const login = createAsyncThunk(
     }
 );
 
+export const show = createAsyncThunk(
+    "auth/show",
+    async (id , {rejectWithValue}) => {
+        try {
+            const res = await AuthService.show(id)
+            console.log('ddddd', res.data)
+            return res.data
+        }catch (err) {
+            return rejectWithValue(err.response?.data || err.message);
+        }
+    }
+)
 
 const authSlice = createSlice({
     name: 'auth',
@@ -67,7 +79,20 @@ const authSlice = createSlice({
             .addCase(login.rejected, (state, action: PayloadAction<string | undefined>) => {
                 state.loading = false;
                 state.errorMessage = action.payload || "Login failed";
-            });
+            })
+            .addCase(show.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(show.fulfilled, (state, action: PayloadAction<any>) => {
+                state.loading = false;
+                state.dataObj = action.payload;
+                state.errorMessage = null;
+            })
+            .addCase(show.rejected, (state, action: PayloadAction<string | undefined>) => {
+                state.loading = false;
+                state.errorMessage = action.payload || "Login failed";
+            })
+
     },
 });
 

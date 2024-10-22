@@ -1,10 +1,8 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import { ClipLoader } from "react-spinners";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/navigation";
-import {useNavigate} from "react-router-dom";
-import Api from "../api/Api.ts";
+import { useNavigate } from "react-router-dom";
+import { Swiper, SwiperSlide } from "swiper/react"; // Make sure to import Swiper components
+import "swiper/swiper-bundle.css"; // Import Swiper styles
 
 const Film: React.FC<{ filmList: any[], errorMessage: string, loading: boolean }> = ({ filmList, errorMessage, loading }) => {
     const navigate = useNavigate();
@@ -12,43 +10,51 @@ const Film: React.FC<{ filmList: any[], errorMessage: string, loading: boolean }
     const handleFilmClick = (filmId: string) => {
         navigate(`/films/${filmId}`);
     };
+
     return (
-        <div className={"m-12"}>
-            <h1 className={"mb-11"}>Trending Films</h1>
-            <div className="flex flex-wrap gap-4">
-                {loading ? (
-                    <div className="flex justify-center items-center h-screen">
-                        <ClipLoader color="#ffffff"/>
-                    </div>
-                ) : (
-                    <>
-                        {filmList && filmList.length > 0 ? (
-                            filmList.map((film) => (
-                                <div key={film._id} onClick={() => handleFilmClick(film._id)} >
-                                    <div
-                                        className="relative bg-black w-48 h-96 flex flex-col items-center shadow-lg overflow-hidden group">
-                                        <div
-                                            className="absolute inset-0 bg-black opacity-0 group-hover:opacity-80 transition-opacity duration-300 z-10"/>
+        <div className="m-12">
+            <h1 className="mb-12 text-2xl">Trending Films</h1>
+            {loading ? (
+                <div className="flex justify-center items-center h-screen">
+                    <ClipLoader color="#ffffff" />
+                </div>
+            ) : (
+                <>
+                    {errorMessage && <div className="text-red-500 text-center">{errorMessage}</div>}
+                    {filmList && filmList.length > 0 ? (
+                        <Swiper
+                            spaceBetween={30}
+                            slidesPerView={1}
+                            breakpoints={{
+                                640: {
+                                    slidesPerView: 2,
+                                },
+                                768: {
+                                    slidesPerView: 3,
+                                },
+                            }}
+                        >
+                            {filmList.map((film) => (
+                                <SwiperSlide key={film?._id} onClick={() => handleFilmClick(film?._id)}>
+                                    <div className="relative rounded-lg overflow-hidden cursor-pointer">
                                         <img
-                                            src={`http://localhost:8080/${film?.image}`}
+                                            src={`${film?.image}`}
                                             alt={film.name}
-                                            className="w-full h-full object-cover z-0 transition-transform duration-500 transform group-hover:scale-105"
+                                            className="w-full h-60 object-cover"
                                         />
+                                        <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-[#0D1117] to-transparent text-white">
+                                            <h3 className="text-xl font-semibold">{film.name}</h3>
+                                            <p className="mt-1 text-sm">Duration: {film.duration} min</p>
+                                        </div>
                                     </div>
-                                    <div
-                                        className="inset-0 flex items-center justify-center transform transition-all duration-300 opacity-0 group-hover:opacity-100 z-20">
-                                        <p className="text-white text-lg font-bold text-center rotate-90 group-hover:rotate-0 transition-transform">
-                                            {film.name}
-                                        </p>
-                                    </div>
-                                </div>
-                            ))
-                        ) : (
-                            <div className="text-center">No films available.</div>
-                        )}
-                    </>
-                )}
-            </div>
+                                </SwiperSlide>
+                            ))}
+                        </Swiper>
+                    ) : (
+                        <div className="text-center">No films available.</div>
+                    )}
+                </>
+            )}
         </div>
     );
 };

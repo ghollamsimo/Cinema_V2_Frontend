@@ -5,7 +5,7 @@ import { fetchFilmById } from "../redux/slices/FilmSlice.ts";
 import MovieBanner from "../components/MovieBanner.tsx";
 import MovieDetails from "../components/MovieDetails.tsx";
 import Comments from "../components/Comments.tsx";
-import ServerLinks from "../components/ServerLinks.tsx";
+import Genre from "../components/Genre.tsx";
 import { ClipLoader } from "react-spinners";
 import Header from "../components/Header.tsx";
 
@@ -13,7 +13,7 @@ const FilmPage = () => {
     const { filmId } = useParams();
     const dispatch = useDispatch();
 
-    const film = useSelector((state) => state.film.dataObj);
+    const film = useSelector((state) => state.film?.dataObj);
     const loading = useSelector((state) => state.film.loading);
     const errorMessage = useSelector((state) => state.film.errorMessage);
     useEffect(() => {
@@ -42,9 +42,9 @@ const FilmPage = () => {
                     {film ? (
                         <>
                             <MovieBanner film={film} />
-                            <ServerLinks film={film} />
+                            <Genre film={film} />
                             <MovieDetails film={film} />
-                            <Comments comments={film.comments} filmId={film._id} />
+                            <Comments comments={film?.comments} filmId={film?._id} />
                         </>
                     ) : (
                         <div className="text-center">Film not found.</div>

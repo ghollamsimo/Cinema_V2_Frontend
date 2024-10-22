@@ -22,7 +22,11 @@ class AuthService {
     }
 
     getToken(){
-        return localStorage.getItem()
+        return localStorage.getItem('token')
+    }
+
+    show(id){
+        return this.http.get(`/auth/show/${id}`)
     }
 }
 

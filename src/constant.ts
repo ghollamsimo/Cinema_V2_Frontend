@@ -4,6 +4,15 @@ export interface Films {
     duration: number;
     image: string;
 }
+export interface MovieDetailsProps {
+    film: {
+        name: string;
+        description: string;
+        duration: number;
+        genres?: string[];
+        cast?: string[];
+    };
+}
 
 interface ConfigOptions {
     baseURL: string;

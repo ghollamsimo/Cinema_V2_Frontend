@@ -4,7 +4,7 @@ import { initialState } from "../initialisation.ts";
 
 export const storeComment = createAsyncThunk(
     "comment/store",
-    async ({ comment, client_id , film_id}, { rejectWithValue }) => {  // Ensure correct parameter destructuring
+    async ({ comment, client_id , film_id}, { rejectWithValue }) => {
         try {
             const response = await CommentService.create({ comment, client_id }, film_id);
             return response.data;
