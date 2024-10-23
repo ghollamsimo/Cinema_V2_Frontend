@@ -1,6 +1,6 @@
 import './App.css';
 import {Route, Routes, Navigate} from "react-router-dom";
-import React, {useEffect, useState} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import Login from "./auth/Login.tsx";
 import HomePage from "./pages/HomePage.tsx";
 import FilmPage from "./pages/FilmPage.tsx";
@@ -8,12 +8,16 @@ import {Notfound} from "./pages/Notfound.tsx";
 import {useDispatch} from "react-redux";
 import {jwtDecode} from "jwt-decode";
 import {show} from "./redux/slices/AuthSlice.ts";
+import Header from "./components/Header.tsx";
+import Register from "./auth/Register.tsx";
 
 function App() {
     const [user_id, setUser_id] = useState<string | null>(null);
-    const [user_role, setUser_role] = useState<string | null>(null);  // Store user role
+    const [user_role, setUser_role] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
     const dispatch = useDispatch();
+    const excludedRoutes = [ '/admin' , '/login', '/register', '*'];
+    const shouldDisplayNavbar = !excludedRoutes.some(route => location.pathname.includes(route));
 
     const isLoggedIn = () => {
         const token = localStorage.getItem("token");
@@ -51,16 +55,16 @@ function App() {
                 dispatch(show(userId));
             }
         }
-        setLoading(false);  // Set loading to false once token is processed
+        setLoading(false);
     }, [dispatch]);
 
-    // Middleware-like Protected Route Component
+
     const ProtectedRoute = ({role, children}: {role: string, children: JSX.Element}) => {
-        // If still loading, don't render anything yet
+
         if (loading) {
-            return <div>Loading...</div>;  // You can add a better loading spinner here if needed
+            return <div>Loading...</div>;
         }
-        // Redirect to login if not logged in or role mismatch
+
         if (!isLoggedIn() || user_role !== role) {
             return <Navigate to="/login" replace />;
         }
@@ -69,11 +73,15 @@ function App() {
 
     return (
         <>
+            {shouldDisplayNavbar && (
+                <Fragment>
+                    <Header userid={user_id}/>
+                </Fragment>
+            )}
             <Routes>
-                {/* Protected routes for "Client" */}
                 <Route path="/" element={
                     <ProtectedRoute role="Client">
-                        <HomePage userId={user_id} />
+                        <HomePage />
                     </ProtectedRoute>
                 } />
 
@@ -83,15 +91,14 @@ function App() {
                     </ProtectedRoute>
                 } />
 
-                {/* Protected route for "Admin" */}
                 <Route path="/admin" element={
                     <ProtectedRoute role="Admin">
-                        <div>Admin Page</div>  {/* Replace with your actual AdminPage component */}
+                        <div>Admin Page</div>
                     </ProtectedRoute>
                 } />
 
-                {/* Public routes */}
                 <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
                 <Route path="*" element={<Notfound />} />
             </Routes>
         </>

@@ -5,7 +5,7 @@ import { jwtDecode } from 'jwt-decode';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
-import { IoClose } from 'react-icons/io5'; // Importing close icon
+import { IoClose } from 'react-icons/io5';
 
 const Comments = ({ comments = [], filmId }) => {
     const [newComment, setNewComment] = useState('');
@@ -49,14 +49,13 @@ const Comments = ({ comments = [], filmId }) => {
     };
 
     const handleDelete = (commentId) => {
-        // Add the delete functionality here
         console.log("Delete comment with ID:", commentId);
     };
 
     return (
-        <div className="bg-gray-900 text-white p-4">
-            <h2 className="text-xl font-bold">Comments</h2>
-            <p className="text-gray-400 my-2">We hope you have a good time browsing the comment section!</p>
+        <div className="bg-gray-900 text-white p-6 rounded-lg shadow-md">
+            <h2 className="text-2xl font-bold mb-4">Comments</h2>
+            <p className="text-gray-400 mb-2">We hope you have a good time browsing the comment section!</p>
 
             <form onSubmit={handleCommentSubmit} className="relative mb-5 mt-5">
                 <input
@@ -94,7 +93,7 @@ const Comments = ({ comments = [], filmId }) => {
                                         <span className="text-sm text-neutral-500 dark:text-neutral-400 mt-0.5">Posted on {new Date(comment.createdAt).toLocaleDateString()}</span>
                                     </div>
                                     <button onClick={() => handleDelete(comment._id)} className="">
-                                        <IoClose className="w-5 h-5 text-neutral-500 hover:text-red-600"/>
+                                        <IoClose className="w-5 h-5 text-neutral-500 hover:text-red-600" />
                                     </button>
                                 </div>
                                 <span className="block mt-3 text-neutral-6000 dark:text-neutral-300">{comment.comment}</span>

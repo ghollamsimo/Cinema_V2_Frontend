@@ -120,9 +120,6 @@ const Login: React.FC = () => {
                 </div>
             </div>
 
-            <Routes>
-                <Route path="/register" element={<Register />} />
-            </Routes>
         </>
     );
 };

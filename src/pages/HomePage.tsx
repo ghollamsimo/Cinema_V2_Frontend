@@ -2,11 +2,10 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { films, fetchFilmById } from "../redux/slices/FilmSlice.ts";
 import Film from "../components/Film.tsx";
-import Header from "../components/Header.tsx";
 import { Hero } from "../components/Hero.tsx";
 import Collab from "../components/Collab.tsx";
 
-const HomePage: React.FC = ({userId}) => {
+const HomePage: React.FC = () => {
     const dispatch = useDispatch();
     const filmList = useSelector((state) => state.film.datalist);
     const errorMessage = useSelector((state) => state.film.errorMessage);
@@ -24,7 +23,6 @@ const HomePage: React.FC = ({userId}) => {
 
     return (
         <>
-            <Header />
             <Hero />
             <Collab />
             <Film filmList={filmList} errorMessage={errorMessage} loading={loading} />
