@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { IoPlay } from "react-icons/io5";
+import PopupError from "./PopupError.tsx";
 
 const MovieBanner: React.FC<{ film: any }> = ({ film }) => {
     const [isVideoVisible, setVideoVisible] = useState(false);
@@ -18,11 +19,11 @@ const MovieBanner: React.FC<{ film: any }> = ({ film }) => {
         }
     };
 
-    const closePopup = () => {
-        setPopupVisible(false);
-    };
+
 
     return (
+        <>
+
         <div className="relative mt-28 m-12 bg-black text-white h-96 flex justify-center items-center">
             <img
                 src={`${film?.image}`}
@@ -49,24 +50,10 @@ const MovieBanner: React.FC<{ film: any }> = ({ film }) => {
                 />
             )}
 
-            {isPopupVisible && (
-                <div
-                    className="fixed text-white inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50"
-                    onClick={closePopup}
-                >
-                    <div className="bg-[#111827] p-6 rounded-lg text-center shadow-lg">
-                        <h2 className="text-xl font-bold mb-4">Oops! You need to be subscribed to watch this movie.</h2>
-                        <p>Please log in to access this content.</p>
-                        <button
-                            className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
-                            onClick={closePopup}
-                        >
-                            Close
-                        </button>
-                    </div>
-                </div>
-            )}
+
         </div>
+            {isPopupVisible && <PopupError description={'Oops! You need to be subscribed to watch this movie.'} setOpenModal={setPopupVisible}/>}
+        </>
     );
 };
 

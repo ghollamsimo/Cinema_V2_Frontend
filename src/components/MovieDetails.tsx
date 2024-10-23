@@ -2,9 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { storeRate } from "../redux/slices/RatingSlice.ts";
 import { MovieDetailsProps as MovieDetailsProp } from '../constant.ts';
+import PopupError from "./PopupError.tsx";
 
 const MovieDetails: React.FC<MovieDetailsProp> = ({ film }) => {
     console.log('dkd', )
+    const [isPopupVisible, setPopupVisible] = useState(false);
+
     const token = localStorage.getItem('token');
     const dispatch = useDispatch();
     const { loading, errorMessage } = useSelector((state: any) => state.rating);
@@ -28,11 +31,12 @@ const MovieDetails: React.FC<MovieDetailsProp> = ({ film }) => {
         dispatch(storeRate({ rate: star, film_id: film._id }));
         setIsRated(true);
         }else {
-            console.log('hhhhhh')
+            setPopupVisible(true)
         }
     };
 
     return (
+        <>
         <div className="flex p-6 text-white bg-gray-900">
             <div className="w-full md:mr-6">
                 <div className="flex align-middle items-center justify-between">
@@ -59,6 +63,9 @@ const MovieDetails: React.FC<MovieDetailsProp> = ({ film }) => {
                 <p className="text-lg my-4">{film.description}</p>
             </div>
         </div>
+            {isPopupVisible && <PopupError description={'Oops! You need to be subscribed to rate.'} setOpenModal={setPopupVisible}/>}
+
+        </>
     );
 };
 
