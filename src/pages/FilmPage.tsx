@@ -14,6 +14,7 @@ const FilmPage = () => {
     const dispatch = useDispatch();
 
     const film = useSelector((state) => state.film?.dataObj);
+    console.log("", film);
     const loading = useSelector((state) => state.film.loading);
     const errorMessage = useSelector((state) => state.film.errorMessage);
     useEffect(() => {

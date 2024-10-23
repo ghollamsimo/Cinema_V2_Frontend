@@ -5,6 +5,7 @@ import { jwtDecode } from 'jwt-decode';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
+import { IoClose } from 'react-icons/io5'; // Importing close icon
 
 const Comments = ({ comments = [], filmId }) => {
     const [newComment, setNewComment] = useState('');
@@ -14,11 +15,9 @@ const Comments = ({ comments = [], filmId }) => {
     const handleCommentSubmit = (event) => {
         event.preventDefault();
 
-
         if (newComment.trim()) {
             const token = localStorage.getItem('token');
             let clientId = null;
-
 
             if (!token) {
                 toast.error('You are not logged in. Please log in to comment.', {
@@ -26,7 +25,6 @@ const Comments = ({ comments = [], filmId }) => {
                 });
                 return;
             }
-
 
             try {
                 const decoded = jwtDecode(token);
@@ -39,7 +37,6 @@ const Comments = ({ comments = [], filmId }) => {
                 return;
             }
 
-
             const commentData = {
                 client_id: clientId,
                 comment: newComment,
@@ -49,6 +46,11 @@ const Comments = ({ comments = [], filmId }) => {
             dispatch(storeComment(commentData));
             setNewComment('');
         }
+    };
+
+    const handleDelete = (commentId) => {
+        // Add the delete functionality here
+        console.log("Delete comment with ID:", commentId);
     };
 
     return (
@@ -74,13 +76,29 @@ const Comments = ({ comments = [], filmId }) => {
                 </button>
             </form>
 
-            <div className="space-y-4">
+            <div className="divide-y divide-amber-50 space-y-4">
                 {comments.length > 0 ? (
                     comments.map((comment) => (
-                        <div key={comment._id} className="bg-gray-800 p-4 rounded">
-                            <p>
-                                <span className="font-bold">{comment.client_id.name || 'Unknown User'}</span>: {comment.comment}
-                            </p>
+                        <div key={comment._id} className="nc-CommentListing flex space-x-4 py-8" data-nc-id="CommentListing">
+                            <div className="pt-0.5">
+                                <div className="wil-avatar relative flex-shrink-0 inline-flex items-center justify-center text-neutral-100 uppercase font-semibold shadow-inner rounded-full h-10 w-10 text-lg ring-1 ring-white dark:ring-neutral-900">
+                                    <span className="wil-avatar__name">{comment.client_id.name ? comment.client_id.name.charAt(0).toUpperCase() : 'U'}</span>
+                                </div>
+                            </div>
+                            <div className="flex-grow">
+                                <div className="flex justify-between space-x-3">
+                                    <div className="flex flex-col">
+                                        <div className="text-sm font-semibold">
+                                            <span>{comment.client_id.name || 'Unknown User'}</span>
+                                        </div>
+                                        <span className="text-sm text-neutral-500 dark:text-neutral-400 mt-0.5">Posted on {new Date(comment.createdAt).toLocaleDateString()}</span>
+                                    </div>
+                                    <button onClick={() => handleDelete(comment._id)} className="">
+                                        <IoClose className="w-5 h-5 text-neutral-500 hover:text-red-600"/>
+                                    </button>
+                                </div>
+                                <span className="block mt-3 text-neutral-6000 dark:text-neutral-300">{comment.comment}</span>
+                            </div>
                         </div>
                     ))
                 ) : (

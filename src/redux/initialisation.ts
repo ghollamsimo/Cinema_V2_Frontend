@@ -1,3 +1,5 @@
+import {AuthState} from "../constant.ts";
+
 export const initialState: AuthState = {
     loading: false,
     datalist: [],

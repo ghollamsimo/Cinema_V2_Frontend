@@ -1,46 +1,62 @@
-import React, {useState} from "react";
-import {MovieDetailsProps as MovieDetailsProp} from '../constant.ts'
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { storeRate } from "../redux/slices/RatingSlice.ts";
+import { MovieDetailsProps as MovieDetailsProp } from '../constant.ts';
 
 const MovieDetails: React.FC<MovieDetailsProp> = ({ film }) => {
-    const [rating, setRating] = useState<number>(0);
+    console.log('dkd', )
+    const token = localStorage.getItem('token');
+    const dispatch = useDispatch();
+    const { loading, errorMessage } = useSelector((state: any) => state.rating);
+
+    const existingRating = film?.userRatings?.find((rating) => rating?.clientName === token)?.rate || 0;
+
+    const [rating, setRating] = useState<number>(existingRating);
+    const [isRated, setIsRated] = useState<boolean>(!!existingRating);
+
+    useEffect(() => {
+        if (existingRating) {
+            setRating(existingRating);
+            setIsRated(true);
+        }
+    }, [existingRating]);
+
+    const handleRating = (star: number) => {
+        if (token){
+        if (isRated) return;
+        setRating(star);
+        dispatch(storeRate({ rate: star, film_id: film._id }));
+        setIsRated(true);
+        }else {
+            console.log('hhhhhh')
+        }
+    };
+
     return (
-        <div className="flex flex-col md:flex-row p-6 text-white bg-gray-900">
-            <div className="w-full md:w-2/3 md:mr-6">
-                <div className='flex align-middle items-center justify-between'>
+        <div className="flex p-6 text-white bg-gray-900">
+            <div className="w-full md:mr-6">
+                <div className="flex align-middle items-center justify-between">
                     <h1 className="text-4xl font-bold">{film.name}</h1>
                     <div className="flex items-center space-x-4">
-                        {[1, 2, 3, 4, 5].map((star) => {
-                            return (
-                                <span
-                                    key={star}
-                                    className='star'
-                                    style={{
-                                        cursor: 'pointer',
-                                        color: rating >= star ? 'gold' : 'gray',
-                                        fontSize: '35px',
-                                    }}
-                                    onClick={() => {
-                                        setRating(star);
-                                    }}
-                                >
-                                    ★
-                                </span>
-                            );
-                        })}
+                        {[1, 2, 3, 4, 5].map((star) => (
+                            <span
+                                key={star}
+                                className="star"
+                                style={{
+                                    cursor: isRated ? "not-allowed" : "pointer",
+                                    color: rating >= star ? "gold" : "gray",
+                                    fontSize: "35px",
+                                }}
+                                onClick={() => handleRating(star)}
+                            >
+                                ★
+                            </span>
+                        ))}
                     </div>
+                    {loading && <p>Submitting your rating...</p>}
+                    {errorMessage && <p className="text-red-500">{errorMessage}</p>}
                 </div>
                 <p className="text-lg my-4">{film.description}</p>
-            </div>
-
-            <div className="w-full md:w-1/3 mt-6 md:mt-0">
-                <div className="bg-gray-800 p-4 rounded-md">
-                    <h2 className="text-xl font-bold">Tech Details</h2>
-                    <p>Type: Movie</p>
-                    <p>Status: Released</p>
-                    <p>Genre: {film.genres?.length ? film.genres.join(", ") : "N/A"}</p>
-                    <p>Duration: {film.duration} minutes</p>
-                    <p>Cast: {film.cast?.length ? film.cast.join(", ") : "N/A"}</p>
-                </div>
             </div>
         </div>
     );

@@ -1,9 +1,3 @@
-export interface Films {
-    _id: string;
-    name: string;
-    duration: number;
-    image: string;
-}
 export interface MovieDetailsProps {
     film: {
         name: string;
@@ -14,7 +8,7 @@ export interface MovieDetailsProps {
     };
 }
 
-interface ConfigOptions {
+export interface ConfigOptions {
     baseURL: string;
     headers: {
         'Content-Type': string;
@@ -22,7 +16,7 @@ interface ConfigOptions {
     };
 }
 
-interface AuthState {
+export interface AuthState {
     loading: boolean;
     datalist: any[];
     dataObj: any;
@@ -31,19 +25,19 @@ interface AuthState {
 }
 
 
-interface RegisterData {
+export interface RegisterData {
     name: string;
     email: string;
     password: string;
     role: string;
 }
 
-interface LoginData {
+export interface LoginData {
     email: string;
     password: string;
 }
 
-interface LogoutData {
+export interface LogoutData {
     token: string;
 }
 

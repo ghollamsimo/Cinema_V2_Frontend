@@ -1,5 +1,5 @@
 import Api from "../api/Api.ts";
-
+import {RegisterData, LoginData, LogoutData} from "../constant.ts"
 class AuthService {
     private http: ReturnType<typeof Api>;
 
