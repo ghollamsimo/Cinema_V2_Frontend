@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { login } from "../redux/slices/AuthSlice.ts";
 import { useDispatch } from "react-redux";
-import { Link, Route, Routes, useNavigate } from "react-router-dom";
+import { Link, Route, Routes } from "react-router-dom";
+import {jwtDecode} from "jwt-decode";
 import Register from "./Register.tsx";
 
 const Login: React.FC = () => {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         email: "",
         password: "",
@@ -54,7 +54,19 @@ const Login: React.FC = () => {
         if (login.fulfilled.match(resultAction)) {
             const token = resultAction.payload.token;
             localStorage.setItem("token", token);
-            navigate("/");
+
+
+            const decodedToken: any = jwtDecode(token);
+            const userRole = decodedToken?.roles[0];
+
+
+            if (userRole === "Admin") {
+                window.location.href = "/admin";
+            } else if (userRole === "Client") {
+                window.location.href = "/";
+            } else {
+                console.error("Unknown role:", userRole);
+            }
         } else {
             console.error(resultAction.payload);
         }
@@ -73,12 +85,12 @@ const Login: React.FC = () => {
                                 <span className="text-neutral-800 dark:text-neutral-200">Email address</span>
                                 <input
                                     type="email"
-                                    name="email" // Add name attribute
+                                    name="email"
                                     onChange={handleInputChange}
                                     className={`block w-full border ${errors.email ? 'border-red-600' : 'border-gray-600'} outline-0 text-white bg-white dark:bg-transparent rounded-2xl text-sm font-normal h-11 px-4 py-3 mt-1`}
                                     placeholder="example@example.com"
                                 />
-                                {errors.email && <span className="text-red-600 text-sm">{errors.email}</span>} {/* Display email error */}
+                                {errors.email && <span className="text-red-600 text-sm">{errors.email}</span>}
                             </label>
                             <label className="block">
                                 <span className="flex justify-between items-center text-neutral-800 dark:text-neutral-200">
@@ -93,7 +105,7 @@ const Login: React.FC = () => {
                                     onChange={handleInputChange}
                                     className={`block w-full border ${errors.password ? 'border-red-600' : 'border-gray-600'} outline-0 text-white bg-white dark:bg-transparent rounded-2xl text-sm font-normal h-11 px-4 py-3 mt-1`}
                                 />
-                                {errors.password && <span className="text-red-600 text-sm">{errors.password}</span>} {/* Display password error */}
+                                {errors.password && <span className="text-red-600 text-sm">{errors.password}</span>}
                             </label>
                             <button
                                 className="nc-Button relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-6 ttnc-ButtonPrimary disabled:bg-opacity-70 bg-[#4F46E5] hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0"

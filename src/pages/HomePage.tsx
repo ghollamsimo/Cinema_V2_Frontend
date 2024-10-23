@@ -6,7 +6,7 @@ import Header from "../components/Header.tsx";
 import { Hero } from "../components/Hero.tsx";
 import Collab from "../components/Collab.tsx";
 
-const HomePage: React.FC = () => {
+const HomePage: React.FC = ({userId}) => {
     const dispatch = useDispatch();
     const filmList = useSelector((state) => state.film.datalist);
     const errorMessage = useSelector((state) => state.film.errorMessage);

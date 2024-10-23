@@ -33,7 +33,6 @@ export const show = createAsyncThunk(
     async (id , {rejectWithValue}) => {
         try {
             const res = await AuthService.show(id)
-            console.log('ddddd', res.data)
             return res.data
         }catch (err) {
             return rejectWithValue(err.response?.data || err.message);
