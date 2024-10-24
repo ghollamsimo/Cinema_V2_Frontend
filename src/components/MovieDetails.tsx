@@ -5,7 +5,6 @@ import { MovieDetailsProps as MovieDetailsProp } from '../constant.ts';
 import PopupError from "./PopupError.tsx";
 
 const MovieDetails: React.FC<MovieDetailsProp> = ({ film }) => {
-    console.log('dkd', )
     const [isPopupVisible, setPopupVisible] = useState(false);
 
     const token = localStorage.getItem('token');

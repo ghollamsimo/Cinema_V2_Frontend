@@ -1,18 +1,21 @@
-import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import ReservationService from "../../services/ReservationService.ts";
-import {initialState} from "../initialisation.ts";
+import { initialState } from "../initialisation.ts";
 
 export const storeReservation = createAsyncThunk(
-    "reservation/store/id",
-    async (session_id: string, seat: string, { rejectWithValue }) => {
+    "reservation/store",
+    async ({ session_id, seat }, { rejectWithValue }) => {
         try {
-            const response = await ReservationService.create(session_id, seat);
+            const response = await ReservationService.create(session_id, { seat_id: seat });
             return response.data;
         } catch (error: any) {
             return rejectWithValue(error.response?.data || error.message);
         }
     }
 );
+
+
+
 
 const reservationSlice = createSlice({
     name: 'reservation',

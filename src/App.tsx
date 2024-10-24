@@ -40,7 +40,6 @@ function App() {
         if (isLoggedIn()) {
             const decodedToken = decodeToken();
             if (decodedToken) {
-                console.log("Decoded token structure:", decodedToken);
 
                 const userId = decodedToken?._id;
                 const userRole = decodedToken?.roles[0];
