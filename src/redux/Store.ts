@@ -4,6 +4,7 @@ import filmSlice from './slices/FilmSlice.ts';
 import commentSlice from "./slices/CommentSlice.ts";
 import ratingSlice from "./slices/RatingSlice.ts";
 import sessionSlice from "./slices/SessionSlice.ts";
+import reservationSlice from "./slices/ReservationSlice.ts";
 
 export const store = configureStore({
     reducer: {
@@ -11,7 +12,8 @@ export const store = configureStore({
         film: filmSlice,
         comment: commentSlice,
         rating: ratingSlice,
-        session: sessionSlice
+        session: sessionSlice,
+        reservation: reservationSlice
     },
 });
 

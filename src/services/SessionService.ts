@@ -10,6 +10,7 @@ class SessionService {
     getSessions(film_id): Promise<any> {
         return this.http.get(`/session/show/${film_id}`)
     }
+
 }
 
 export default new SessionService()
